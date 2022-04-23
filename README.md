@@ -14,3 +14,7 @@
 本工具使用C#编程语言，基于.NET 6.0开发<br />
 运行本工具需要在Windows系统中安装.NET 6.0的运行环境，微软官网下载地址为：https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0 ，打开网页后选择下载“.NET 桌面运行时”<br />
 安装完运行环境后，双击打开“ConvertTools.exe”，即可运行本工具
+
+## 反馈交流
+
+QQ群：132108644
