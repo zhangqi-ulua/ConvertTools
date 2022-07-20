@@ -8,6 +8,7 @@ namespace ConvertTools.Utils
     {
         private static MD5 _MD5 = new MD5CryptoServiceProvider();
         private static SHA1 _SHA1 = new SHA1CryptoServiceProvider();
+        private static SHA256 _SHA256 = new SHA256CryptoServiceProvider();
 
         public static string UrlEncode(string text, Encoding encoding)
         {
@@ -42,25 +43,31 @@ namespace ConvertTools.Utils
             return sb.ToString();
         }
 
-        public static string Base64Encode(string text)
+        public static string Base64Encode(string text, Encoding encoding)
         {
-            return Convert.ToBase64String(Encoding.Default.GetBytes(text));
+            return Convert.ToBase64String(encoding.GetBytes(text));
         }
 
-        public static string Base64Decode(string text)
+        public static string Base64Decode(string text, Encoding encoding)
         {
-            return Encoding.Default.GetString(Convert.FromBase64String(text));
+            return encoding.GetString(Convert.FromBase64String(text));
         }
 
-        public static string MD5Encrypt(string text)
+        public static string MD5Encrypt(string text, Encoding encoding)
         {
-            byte[] result = _MD5.ComputeHash(Encoding.Default.GetBytes(text));
+            byte[] result = _MD5.ComputeHash(encoding.GetBytes(text));
             return BitConverter.ToString(result).Replace("-", "");
         }
 
-        public static string SHA1Encrypt(string text)
+        public static string SHA1Encrypt(string text, Encoding encoding)
         {
-            byte[] result = _SHA1.ComputeHash(Encoding.Default.GetBytes(text));
+            byte[] result = _SHA1.ComputeHash(encoding.GetBytes(text));
+            return BitConverter.ToString(result).Replace("-", "");
+        }
+
+        public static string SHA256Encrypt(string text, Encoding encoding)
+        {
+            byte[] result = _SHA256.ComputeHash(encoding.GetBytes(text));
             return BitConverter.ToString(result).Replace("-", "");
         }
     }

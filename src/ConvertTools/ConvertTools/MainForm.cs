@@ -13,7 +13,9 @@ namespace ConvertTools
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             // 编码选择框默认选第1项
-            CboChooseEncoding.SelectedIndex = 0;
+            CboChooseEncodingForUrl.SelectedIndex = 0;
+            CboChooseEncodingForBase64.SelectedIndex = 0;
+            CboChooseEncodingForHash.SelectedIndex = 0;
 
             DateTime now = DateTime.Now;
             // 默认填入当前毫秒时间戳和时间字符串
@@ -26,6 +28,16 @@ namespace ConvertTools
         private void BtnCopyToClipboard_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(RtxResult.Text);
+        }
+
+        private void RtxOriginal_TextChanged(object sender, EventArgs e)
+        {
+            LblOriginalTextLength.Text = RtxOriginal.TextLength.ToString();
+        }
+
+        private void RtxResult_TextChanged(object sender, EventArgs e)
+        {
+            LblResultTextLength.Text = RtxResult.TextLength.ToString();
         }
 
         #region Json相关
@@ -66,7 +78,7 @@ namespace ConvertTools
 
         private void BtnUrlEncode_Click(object sender, EventArgs e)
         {
-            Encoding encoding = Encoding.GetEncoding(CboChooseEncoding.SelectedItem.ToString());
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForUrl.SelectedItem.ToString());
             string inputString = ChkIsCRLF.Checked == true ? RtxOriginal.Text.Replace("\n", "\r\n") : RtxOriginal.Text;
             RtxResult.Text = EncodeUtil.UrlEncode(inputString, encoding);
             if (ChkAutoCopyResultToCipboard.Checked == true)
@@ -75,7 +87,7 @@ namespace ConvertTools
 
         private void BtnUrlDecode_Click(object sender, EventArgs e)
         {
-            Encoding encoding = Encoding.GetEncoding(CboChooseEncoding.SelectedItem.ToString());
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForUrl.SelectedItem.ToString());
             RtxResult.Text = EncodeUtil.UrlDecode(RtxOriginal.Text, encoding);
             if (ChkAutoCopyResultToCipboard.Checked == true)
                 Clipboard.SetText(RtxResult.Text);
@@ -107,14 +119,16 @@ namespace ConvertTools
         private void BtnBase64Encode_Click(object sender, EventArgs e)
         {
             string inputString = ChkIsCRLF.Checked == true ? RtxOriginal.Text.Replace("\n", "\r\n") : RtxOriginal.Text;
-            RtxResult.Text = EncodeUtil.Base64Encode(inputString);
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForBase64.SelectedItem.ToString());
+            RtxResult.Text = EncodeUtil.Base64Encode(inputString, encoding);
             if (ChkAutoCopyResultToCipboard.Checked == true)
                 Clipboard.SetText(RtxResult.Text);
         }
 
         private void BtnBase64Decode_Click(object sender, EventArgs e)
         {
-            RtxResult.Text = EncodeUtil.Base64Decode(RtxOriginal.Text);
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForBase64.SelectedItem.ToString());
+            RtxResult.Text = EncodeUtil.Base64Decode(RtxOriginal.Text, encoding);
             if (ChkAutoCopyResultToCipboard.Checked == true)
                 Clipboard.SetText(RtxResult.Text);
         }
@@ -125,8 +139,9 @@ namespace ConvertTools
 
         private void BtnMD5_Click(object sender, EventArgs e)
         {
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForHash.SelectedItem.ToString());
             string inputString = ChkIsCRLF.Checked == true ? RtxOriginal.Text.Replace("\n", "\r\n") : RtxOriginal.Text;
-            string md5Result = EncodeUtil.MD5Encrypt(inputString);
+            string md5Result = EncodeUtil.MD5Encrypt(inputString, encoding);
             RtxResult.Text = ChkToLower.Checked == true ? md5Result.ToLower() : md5Result;
             if (ChkAutoCopyResultToCipboard.Checked == true)
                 Clipboard.SetText(RtxResult.Text);
@@ -134,9 +149,20 @@ namespace ConvertTools
 
         private void BtnSHA1_Click(object sender, EventArgs e)
         {
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForHash.SelectedItem.ToString());
             string inputString = ChkIsCRLF.Checked == true ? RtxOriginal.Text.Replace("\n", "\r\n") : RtxOriginal.Text;
-            string sha1Result = EncodeUtil.SHA1Encrypt(inputString);
+            string sha1Result = EncodeUtil.SHA1Encrypt(inputString, encoding);
             RtxResult.Text = ChkToLower.Checked == true ? sha1Result.ToLower() : sha1Result;
+            if (ChkAutoCopyResultToCipboard.Checked == true)
+                Clipboard.SetText(RtxResult.Text);
+        }
+
+        private void BtnSHA256_Click(object sender, EventArgs e)
+        {
+            Encoding encoding = Encoding.GetEncoding(CboChooseEncodingForHash.SelectedItem.ToString());
+            string inputString = ChkIsCRLF.Checked == true ? RtxOriginal.Text.Replace("\n", "\r\n") : RtxOriginal.Text;
+            string sha256Result = EncodeUtil.SHA256Encrypt(inputString, encoding);
+            RtxResult.Text = ChkToLower.Checked == true ? sha256Result.ToLower() : sha256Result;
             if (ChkAutoCopyResultToCipboard.Checked == true)
                 Clipboard.SetText(RtxResult.Text);
         }

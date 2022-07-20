@@ -33,7 +33,7 @@
             this.BtnJsonAntiPrettyPrint = new System.Windows.Forms.Button();
             this.BtnJsonToPrettyPrint = new System.Windows.Forms.Button();
             this.GrpUrl = new System.Windows.Forms.GroupBox();
-            this.CboChooseEncoding = new System.Windows.Forms.ComboBox();
+            this.CboChooseEncodingForUrl = new System.Windows.Forms.ComboBox();
             this.BtnUrlDecode = new System.Windows.Forms.Button();
             this.BtnUrlEncode = new System.Windows.Forms.Button();
             this.RtxResult = new System.Windows.Forms.RichTextBox();
@@ -43,10 +43,13 @@
             this.BtnUnicodeDecode = new System.Windows.Forms.Button();
             this.BtnUnicodeEncode = new System.Windows.Forms.Button();
             this.GrpBase64 = new System.Windows.Forms.GroupBox();
+            this.CboChooseEncodingForBase64 = new System.Windows.Forms.ComboBox();
             this.BtnBase64Decode = new System.Windows.Forms.Button();
             this.BtnBase64Encode = new System.Windows.Forms.Button();
             this.BtnCopyToClipboard = new System.Windows.Forms.Button();
             this.GrpHash = new System.Windows.Forms.GroupBox();
+            this.BtnSHA256 = new System.Windows.Forms.Button();
+            this.CboChooseEncodingForHash = new System.Windows.Forms.ComboBox();
             this.ChkToLower = new System.Windows.Forms.CheckBox();
             this.BtnSHA1 = new System.Windows.Forms.Button();
             this.BtnMD5 = new System.Windows.Forms.Button();
@@ -68,6 +71,10 @@
             this.ChkAutoCopyResultToCipboard = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.ChkIsCRLF = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.LblOriginalTextLength = new System.Windows.Forms.Label();
+            this.LblResultTextLength = new System.Windows.Forms.Label();
             this.GrpJson.SuspendLayout();
             this.GrpUrl.SuspendLayout();
             this.GrpUnicode.SuspendLayout();
@@ -81,9 +88,10 @@
             // 
             this.RtxOriginal.Location = new System.Drawing.Point(474, 45);
             this.RtxOriginal.Name = "RtxOriginal";
-            this.RtxOriginal.Size = new System.Drawing.Size(419, 866);
+            this.RtxOriginal.Size = new System.Drawing.Size(419, 815);
             this.RtxOriginal.TabIndex = 0;
             this.RtxOriginal.Text = "";
+            this.RtxOriginal.TextChanged += new System.EventHandler(this.RtxOriginal_TextChanged);
             // 
             // GrpJson
             // 
@@ -120,27 +128,27 @@
             // 
             // GrpUrl
             // 
-            this.GrpUrl.Controls.Add(this.CboChooseEncoding);
+            this.GrpUrl.Controls.Add(this.CboChooseEncodingForUrl);
             this.GrpUrl.Controls.Add(this.BtnUrlDecode);
             this.GrpUrl.Controls.Add(this.BtnUrlEncode);
-            this.GrpUrl.Location = new System.Drawing.Point(19, 115);
+            this.GrpUrl.Location = new System.Drawing.Point(19, 109);
             this.GrpUrl.Name = "GrpUrl";
             this.GrpUrl.Size = new System.Drawing.Size(435, 83);
             this.GrpUrl.TabIndex = 2;
             this.GrpUrl.TabStop = false;
             this.GrpUrl.Text = "URL编解码";
             // 
-            // CboChooseEncoding
+            // CboChooseEncodingForUrl
             // 
-            this.CboChooseEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CboChooseEncoding.FormattingEnabled = true;
-            this.CboChooseEncoding.Items.AddRange(new object[] {
+            this.CboChooseEncodingForUrl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CboChooseEncodingForUrl.FormattingEnabled = true;
+            this.CboChooseEncodingForUrl.Items.AddRange(new object[] {
             "UTF-8",
-            "GB2312"});
-            this.CboChooseEncoding.Location = new System.Drawing.Point(294, 34);
-            this.CboChooseEncoding.Name = "CboChooseEncoding";
-            this.CboChooseEncoding.Size = new System.Drawing.Size(121, 25);
-            this.CboChooseEncoding.TabIndex = 3;
+            "GBK"});
+            this.CboChooseEncodingForUrl.Location = new System.Drawing.Point(294, 34);
+            this.CboChooseEncodingForUrl.Name = "CboChooseEncodingForUrl";
+            this.CboChooseEncodingForUrl.Size = new System.Drawing.Size(121, 25);
+            this.CboChooseEncodingForUrl.TabIndex = 3;
             // 
             // BtnUrlDecode
             // 
@@ -168,9 +176,10 @@
             // 
             this.RtxResult.Location = new System.Drawing.Point(911, 45);
             this.RtxResult.Name = "RtxResult";
-            this.RtxResult.Size = new System.Drawing.Size(692, 866);
+            this.RtxResult.Size = new System.Drawing.Size(692, 815);
             this.RtxResult.TabIndex = 3;
             this.RtxResult.Text = "";
+            this.RtxResult.TextChanged += new System.EventHandler(this.RtxResult_TextChanged);
             // 
             // label1
             // 
@@ -194,7 +203,7 @@
             // 
             this.GrpUnicode.Controls.Add(this.BtnUnicodeDecode);
             this.GrpUnicode.Controls.Add(this.BtnUnicodeEncode);
-            this.GrpUnicode.Location = new System.Drawing.Point(19, 214);
+            this.GrpUnicode.Location = new System.Drawing.Point(19, 200);
             this.GrpUnicode.Name = "GrpUnicode";
             this.GrpUnicode.Size = new System.Drawing.Size(288, 83);
             this.GrpUnicode.TabIndex = 6;
@@ -225,14 +234,27 @@
             // 
             // GrpBase64
             // 
+            this.GrpBase64.Controls.Add(this.CboChooseEncodingForBase64);
             this.GrpBase64.Controls.Add(this.BtnBase64Decode);
             this.GrpBase64.Controls.Add(this.BtnBase64Encode);
-            this.GrpBase64.Location = new System.Drawing.Point(19, 315);
+            this.GrpBase64.Location = new System.Drawing.Point(19, 291);
             this.GrpBase64.Name = "GrpBase64";
-            this.GrpBase64.Size = new System.Drawing.Size(288, 83);
+            this.GrpBase64.Size = new System.Drawing.Size(435, 83);
             this.GrpBase64.TabIndex = 8;
             this.GrpBase64.TabStop = false;
             this.GrpBase64.Text = "Base64编解码";
+            // 
+            // CboChooseEncodingForBase64
+            // 
+            this.CboChooseEncodingForBase64.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CboChooseEncodingForBase64.FormattingEnabled = true;
+            this.CboChooseEncodingForBase64.Items.AddRange(new object[] {
+            "UTF-8",
+            "GBK"});
+            this.CboChooseEncodingForBase64.Location = new System.Drawing.Point(294, 38);
+            this.CboChooseEncodingForBase64.Name = "CboChooseEncodingForBase64";
+            this.CboChooseEncodingForBase64.Size = new System.Drawing.Size(121, 25);
+            this.CboChooseEncodingForBase64.TabIndex = 6;
             // 
             // BtnBase64Decode
             // 
@@ -268,20 +290,45 @@
             // 
             // GrpHash
             // 
+            this.GrpHash.Controls.Add(this.BtnSHA256);
+            this.GrpHash.Controls.Add(this.CboChooseEncodingForHash);
             this.GrpHash.Controls.Add(this.ChkToLower);
             this.GrpHash.Controls.Add(this.BtnSHA1);
             this.GrpHash.Controls.Add(this.BtnMD5);
-            this.GrpHash.Location = new System.Drawing.Point(19, 416);
+            this.GrpHash.Location = new System.Drawing.Point(19, 382);
             this.GrpHash.Name = "GrpHash";
-            this.GrpHash.Size = new System.Drawing.Size(435, 83);
+            this.GrpHash.Size = new System.Drawing.Size(435, 131);
             this.GrpHash.TabIndex = 9;
             this.GrpHash.TabStop = false;
             this.GrpHash.Text = "常用散列算法";
             // 
+            // BtnSHA256
+            // 
+            this.BtnSHA256.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnSHA256.Location = new System.Drawing.Point(294, 31);
+            this.BtnSHA256.Name = "BtnSHA256";
+            this.BtnSHA256.Size = new System.Drawing.Size(121, 35);
+            this.BtnSHA256.TabIndex = 9;
+            this.BtnSHA256.Text = "SHA256加密";
+            this.BtnSHA256.UseVisualStyleBackColor = true;
+            this.BtnSHA256.Click += new System.EventHandler(this.BtnSHA256_Click);
+            // 
+            // CboChooseEncodingForHash
+            // 
+            this.CboChooseEncodingForHash.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CboChooseEncodingForHash.FormattingEnabled = true;
+            this.CboChooseEncodingForHash.Items.AddRange(new object[] {
+            "UTF-8",
+            "GBK"});
+            this.CboChooseEncodingForHash.Location = new System.Drawing.Point(152, 84);
+            this.CboChooseEncodingForHash.Name = "CboChooseEncodingForHash";
+            this.CboChooseEncodingForHash.Size = new System.Drawing.Size(121, 25);
+            this.CboChooseEncodingForHash.TabIndex = 8;
+            // 
             // ChkToLower
             // 
             this.ChkToLower.AutoSize = true;
-            this.ChkToLower.Location = new System.Drawing.Point(316, 40);
+            this.ChkToLower.Location = new System.Drawing.Point(15, 86);
             this.ChkToLower.Name = "ChkToLower";
             this.ChkToLower.Size = new System.Drawing.Size(99, 21);
             this.ChkToLower.TabIndex = 8;
@@ -411,7 +458,7 @@
             this.GrpTimeSpan.Controls.Add(this.DptEnd);
             this.GrpTimeSpan.Controls.Add(this.label5);
             this.GrpTimeSpan.Controls.Add(this.DptStart);
-            this.GrpTimeSpan.Location = new System.Drawing.Point(19, 732);
+            this.GrpTimeSpan.Location = new System.Drawing.Point(19, 718);
             this.GrpTimeSpan.Name = "GrpTimeSpan";
             this.GrpTimeSpan.Size = new System.Drawing.Size(435, 109);
             this.GrpTimeSpan.TabIndex = 11;
@@ -470,7 +517,7 @@
             this.ChkAutoCopyResultToCipboard.AutoSize = true;
             this.ChkAutoCopyResultToCipboard.Checked = true;
             this.ChkAutoCopyResultToCipboard.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ChkAutoCopyResultToCipboard.Location = new System.Drawing.Point(118, 860);
+            this.ChkAutoCopyResultToCipboard.Location = new System.Drawing.Point(118, 843);
             this.ChkAutoCopyResultToCipboard.Name = "ChkAutoCopyResultToCipboard";
             this.ChkAutoCopyResultToCipboard.Size = new System.Drawing.Size(207, 21);
             this.ChkAutoCopyResultToCipboard.TabIndex = 12;
@@ -480,7 +527,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(19, 860);
+            this.label7.Location = new System.Drawing.Point(19, 843);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 17);
             this.label7.TabIndex = 13;
@@ -489,18 +536,58 @@
             // ChkIsCRLF
             // 
             this.ChkIsCRLF.AutoSize = true;
-            this.ChkIsCRLF.Location = new System.Drawing.Point(118, 890);
+            this.ChkIsCRLF.Location = new System.Drawing.Point(118, 873);
             this.ChkIsCRLF.Name = "ChkIsCRLF";
             this.ChkIsCRLF.Size = new System.Drawing.Size(157, 21);
             this.ChkIsCRLF.TabIndex = 14;
             this.ChkIsCRLF.Text = "将输入框中的\\n转为\\r\\n";
             this.ChkIsCRLF.UseVisualStyleBackColor = true;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(474, 877);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 17);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "字符数：";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(911, 877);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(56, 17);
+            this.label9.TabIndex = 16;
+            this.label9.Text = "字符数：";
+            // 
+            // LblOriginalTextLength
+            // 
+            this.LblOriginalTextLength.AutoSize = true;
+            this.LblOriginalTextLength.Location = new System.Drawing.Point(536, 877);
+            this.LblOriginalTextLength.Name = "LblOriginalTextLength";
+            this.LblOriginalTextLength.Size = new System.Drawing.Size(15, 17);
+            this.LblOriginalTextLength.TabIndex = 17;
+            this.LblOriginalTextLength.Text = "0";
+            // 
+            // LblResultTextLength
+            // 
+            this.LblResultTextLength.AutoSize = true;
+            this.LblResultTextLength.Location = new System.Drawing.Point(973, 877);
+            this.LblResultTextLength.Name = "LblResultTextLength";
+            this.LblResultTextLength.Size = new System.Drawing.Size(15, 17);
+            this.LblResultTextLength.TabIndex = 18;
+            this.LblResultTextLength.Text = "0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1620, 923);
+            this.ClientSize = new System.Drawing.Size(1620, 903);
+            this.Controls.Add(this.LblResultTextLength);
+            this.Controls.Add(this.LblOriginalTextLength);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.ChkIsCRLF);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.ChkAutoCopyResultToCipboard);
@@ -543,7 +630,7 @@
         private Button BtnJsonAntiPrettyPrint;
         private Button BtnJsonToPrettyPrint;
         private GroupBox GrpUrl;
-        private ComboBox CboChooseEncoding;
+        private ComboBox CboChooseEncodingForUrl;
         private Button BtnUrlDecode;
         private Button BtnUrlEncode;
         private RichTextBox RtxResult;
@@ -578,5 +665,12 @@
         private CheckBox ChkAutoCopyResultToCipboard;
         private Label label7;
         private CheckBox ChkIsCRLF;
+        private Label label8;
+        private Label label9;
+        private Label LblOriginalTextLength;
+        private Label LblResultTextLength;
+        private ComboBox CboChooseEncodingForBase64;
+        private Button BtnSHA256;
+        private ComboBox CboChooseEncodingForHash;
     }
 }
